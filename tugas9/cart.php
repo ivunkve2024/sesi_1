@@ -3,14 +3,14 @@ session_start();
 include "koneksi.php";
 
 // ==========================================
-// PROSES LOGIKA KERANJANG (ADD, DELETE, UPDATE)
+// PROSES LOGIKA cart (ADD, DELETE, UPDATE)
 // ==========================================
 
-// 1. Tambah Produk ke Keranjang
+// 1. Tambah Produk ke cart
 if (isset($_GET['action']) && $_GET['action'] == "add" && $_SERVER['REQUEST_METHOD'] == "POST") {
     $id_produk = $_GET['id'];
     
-    // Jika produk sudah ada di keranjang, tambah quantity-nya
+    // Jika produk sudah ada di cart, tambah quantity-nya
     if (isset($_SESSION['cart'][$id_produk])) {
         $_SESSION['cart'][$id_produk]['quantity'] += 1;
     } else {
@@ -22,18 +22,18 @@ if (isset($_GET['action']) && $_GET['action'] == "add" && $_SERVER['REQUEST_METH
             'quantity' => 1
         ];
     }
-    // Redirect kembali ke index.php atau tetap di keranjang
-    header("Location: keranjang.php");
+    // Redirect kembali ke index.php atau tetap di cart
+    header("Location: cart.php");
     exit;
 }
 
-// 2. Hapus Produk dari Keranjang
+// 2. Hapus Produk dari cart
 if (isset($_GET['action']) && $_GET['action'] == "delete") {
     $id_produk = $_GET['id'];
     if (isset($_SESSION['cart'][$id_produk])) {
         unset($_SESSION['cart'][$id_produk]);
     }
-    header("Location: keranjang.php");
+    header("Location: cart.php");
     exit;
 }
 
@@ -46,14 +46,14 @@ if (isset($_POST['update_cart'])) {
             $_SESSION['cart'][$id]['quantity'] = $qty;
         }
     }
-    header("Location: keranjang.php");
+    header("Location: cart.php");
     exit;
 }
 
-// 4. Kosongkan Keranjang
+// 4. Kosongkan cart
 if (isset($_GET['action']) && $_GET['action'] == "clear") {
     unset($_SESSION['cart']);
-    header("Location: keranjang.php");
+    header("Location: cart.php");
     exit;
 }
 ?>
@@ -63,30 +63,30 @@ if (isset($_GET['action']) && $_GET['action'] == "clear") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keranjang Belanja - EDU Online Shop</title>
+    <title>cart Belanja - EDU Online Shop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body style="background:#f5f5f5;">
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><span class="fw-bold text-dark">Keranjang</span> Belanja Anda</h2>
+        <h2><span class="fw-bold text-dark">cart</span> Belanja Anda</h2>
         <a href="index.php" class="btn btn-outline-secondary">&larr; Kembali Belanja</a>
     </div>
 
     <?php if (empty($_SESSION['cart'])): ?>
-        <!-- Tampilan jika keranjang kosong -->
+        <!-- Tampilan jika cart kosong -->
         <div class="alert alert-warning p-5 rounded-4 shadow-sm text-center">
-            <h4 class="fw-bold">Keranjangmu masih kosong nih...</h4>
-            <p class="text-muted">Yuk, cari produk menarik di toko kami dan masukkan ke keranjang!</p>
+            <h4 class="fw-bold">cartmu masih kosong nih...</h4>
+            <p class="text-muted">Yuk, cari produk menarik di toko kami dan masukkan ke cart!</p>
             <a href="index.php" class="btn btn-warning mt-2 fw-bold">Lihat Produk</a>
         </div>
     <?php else: ?>
-        <!-- Tampilan tabel keranjang -->
+        <!-- Tampilan tabel cart -->
         <div class="row">
             <div class="col-lg-8 mb-4">
                 <div class="card shadow border-0 rounded-4 p-3">
-                    <form method="POST" action="keranjang.php">
+                    <form method="POST" action="cart.php">
                         <div class="table-responsive">
                             <table class="table align-middle">
                                 <thead>
@@ -118,7 +118,7 @@ if (isset($_GET['action']) && $_GET['action'] == "clear") {
                                             </td>
                                             <td class="fw-bold text-success">Rp <?= number_format($subtotal); ?></td>
                                             <td>
-                                                <a href="keranjang.php?action=delete&id=<?= $id; ?>" class="btn btn-sm btn-danger rounded-pill px-3">Hapus</a>
+                                                <a href="cart.php?action=delete&id=<?= $id; ?>" class="btn btn-sm btn-danger rounded-pill px-3">Hapus</a>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -127,8 +127,8 @@ if (isset($_GET['action']) && $_GET['action'] == "clear") {
                         </div>
                         
                         <div class="d-flex justify-content-between mt-3">
-                            <a href="keranjang.php?action=clear" class="btn btn-sm btn-outline-danger" onclick="return confirm('Kosongkan keranjang?')">Kosongkan Keranjang</a>
-                            <button type="submit" name="update_cart" class="btn btn-sm btn-primary">Perbarui Keranjang</button>
+                            <a href="cart.php?action=clear" class="btn btn-sm btn-outline-danger" onclick="return confirm('Kosongkan cart?')">Kosongkan cart</a>
+                            <button type="submit" name="update_cart" class="btn btn-sm btn-primary">Perbarui cart</button>
                         </div>
                     </form>
                 </div>

@@ -133,7 +133,7 @@ $data = mysqli_query($conn, "SELECT * FROM products $filter");
                     <p><strong>Stok:</strong> <?= $row['stok']; ?></p>
 
                     <!-- Pastikan database Anda memiliki kolom primary key bernama 'id' (atau sesuaikan dengan nama kolom ID Anda) -->
-                    <form method="POST" action="keranjang.php?action=add&id=<?= $row['id']; ?>" class="mt-auto">
+                    <form method="POST" action="cart.php?action=add&id=<?= $row['id']; ?>" class="mt-auto">
                         <input type="hidden" name="nama_produk" value="<?= $row['nama']; ?>">
                         <input type="hidden" name="harga_produk" value="<?= $row['harga']; ?>">
                         <input type="hidden" name="gambar_produk" value="<?= $row['gambar']; ?>">
